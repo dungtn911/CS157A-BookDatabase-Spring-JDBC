@@ -6,10 +6,10 @@ In the above schema (E-R diagram), blue represents the name of the table, and gr
 
 Overview:
 In this project, using JDBC application that access an installed RDBMS (you need to have an account), you will need to:
-   Page 1 of 4
-• Create the Books database tables as specified in the schema definition below.
+   Page 1 of 4\
+• Create the Books database tables as specified in the schema definition below.\
 • Initialize the different tables (at least 15 entries per table) appropriately: all
-fields cannot be null.
+fields cannot be null.\
 • Issue the following SQL statements. For queries print the results from java into your console:
 • Select all authors from the authors table. Order the information alphabetically by the author’s last name and first name.
 • Select all publishers from the publishers table.
