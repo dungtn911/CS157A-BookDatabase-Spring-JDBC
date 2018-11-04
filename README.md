@@ -18,4 +18,4 @@ fields cannot be null.\
 • Edit/Update the existing information about an author\
 • Add a new title for an author\
 • Add new publisher\
-• Edit/Update the existing information about a publisher\
+• Edit/Update the existing information about a publisher
