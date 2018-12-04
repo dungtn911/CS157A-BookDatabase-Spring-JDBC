@@ -14,9 +14,6 @@ public class JDBConnection {
     static final String PASS = "yyx71618";
 
 
-    
-
-
     public static void main(String[] args) throws SQLException {
         Connection con = null;
         Statement stmt = null;
@@ -32,16 +29,23 @@ public class JDBConnection {
             //  autoFill(stmt);
 
 
+           //  selectQueryOnAuthor(stmt);
 
+           //  selectQueryOnPublihers(stmt);
 
-               // selectQueryOnAuthor(stmt);
-            // selectQueryOnPublihers(stmt);
-            // selectBooksFromSpecificPublisher(stmt);
-            // addNewAuthorQuery(stmt);
-            //   addNewPublisherQuery(stmt);
-           // addNewTitleForAuthor(stmt, con);
-            // updatePublisherInfo(stmt);
-            //  updateAuthorInfo(stmt);
+              selectBooksFromSpecificPublisher(stmt);
+
+           // addNewAuthorQuery(stmt);
+
+           // addNewPublisherQuery(stmt);
+
+          //   addNewTitleForAuthor(stmt, con);
+
+           // selectAllTitles(stmt);
+
+           //  updatePublisherInfo(stmt);
+
+             // updateAuthorInfo(stmt);
 
 
 //            stmt.executeUpdate("CREATE TRIGGER trg_test \n " +
@@ -115,8 +119,6 @@ public class JDBConnection {
     }
 
 
-
-
     //1) Select all authors from the authors table. Order the information alphabetically by the author’s last name and first name.
     //   works perfect, bug free
     public static void selectQueryOnAuthor(Statement stmt) {
@@ -177,11 +179,19 @@ public class JDBConnection {
     public static void selectBooksFromSpecificPublisher(Statement stmt) {
 
 
-
         try {
 
-            //select all the books that matches the publisherID = 4
-            String sql = "SELECT * FROM titles WHERE publisherID = 4 ";
+            //select all the books that matches the publisher = Pan Macmillan
+            int id = 0;
+
+            
+            String get = "SELECT * FROM publishers WHERE publisherName = 'Pan Macmillan' ";
+            ResultSet rs1 = stmt.executeQuery(get);
+            while (rs1.next()) {
+                id = rs1.getInt("publisherID");
+            }
+
+            String sql = "SELECT * FROM titles WHERE publisherID = " + id + " ORDER BY title ASC ";
             ResultSet rs = stmt.executeQuery(sql);
             // if book exits then print them all
             while (rs.next()) {
@@ -195,10 +205,10 @@ public class JDBConnection {
 
                 System.out.print("ISBN: " + isbn);
                 System.out.print(", Title: " + title);
-                System.out.print(", Edition Number: " + editionNum);
+             //   System.out.print(", Edition Number: " + editionNum);
                 System.out.print(", Year: " + year);
-                System.out.print(", PublisherID: " + publisherID);
-                System.out.print(", Price: " + price);
+             //   System.out.print(", PublisherID: " + publisherID);
+            //    System.out.print(", Price: " + price);
                 System.out.println();
             }
             rs.close();
@@ -207,6 +217,7 @@ public class JDBConnection {
             e.printStackTrace();
         }
     }
+
 
     //-------------------------------------------------------------------------------------------------------------------------
     //4) Add new author
@@ -275,7 +286,7 @@ public class JDBConnection {
                 sql = " UPDATE publishers " + " SET publisherName = '" + newPBname + "'" + " WHERE publisherName = '" + pbname + "'";
                 stmt.executeUpdate(sql);
             } else {
-                System.out.println("Failure! publisher '"+ pbname  +"' does not existed");
+                System.out.println("Failure! publisher '" + pbname + "' does not existed");
             }
 
         } catch (SQLException e) {
@@ -304,9 +315,12 @@ public class JDBConnection {
                 String newFN = sc.next();
                 System.out.println("Enter the New author's last name You want to update: ");
                 String newLN = sc.next();
-                sql = " UPDATE authors " + " SET firstname = '" + newFN + "', " + " lastname ='" + newLN + "'"
-                        + " WHERE firstname = '" + oldfirstName + "' AND " + " lastname ='" + oldfirstName + "'";
+                sql = " UPDATE authors " + " SET firstname = '" + newFN + "' WHERE firstname = '" + oldfirstName + "' AND " + " lastname ='" + oldlastName + "'";
+
+                String sql2 = " UPDATE authors " + " SET lastname = '" + newLN + "' WHERE firstname = '" + oldfirstName + "' AND " + " lastname ='" + oldlastName + "'";
+
                 stmt.executeUpdate(sql);
+                stmt.executeUpdate(sql2);
             } else {
                 System.out.println("Failure! author does not  exist");
             }
@@ -334,22 +348,21 @@ public class JDBConnection {
             CallableStatement cStmt = con.prepareCall("{call add_new_title_to_author(?, ?, ?, ?, ?, ?, ? ,?)}");
 
 
-
             //author info
             cStmt.setString(7, "Roy");
             cStmt.setString(8, "Oh");
 
             //authorISBN info
-            cStmt.setString(1, "ISBN000443");
+            cStmt.setString(1, "ISBN000124");
 
             //publisher info
-            cStmt.setString(5, "House TYK");
+            cStmt.setString(5, "Random baba");
 
             //title info
-            cStmt.setString(2, "POL");
-            cStmt.setInt(3, 1);
-            cStmt.setString(4, "1991");
-            cStmt.setDouble(6, 110.22);
+            cStmt.setString(2, "New Start");
+            cStmt.setInt(3, 2);
+            cStmt.setString(4, "1990");
+            cStmt.setDouble(6, 10.99);
 
 
             cStmt.execute();
@@ -374,8 +387,7 @@ public class JDBConnection {
 //            BEGIN
 
 
-
-              //1) check if author is in our author tabl
+            //1) check if author is in our author tabl
 
 //            IF NOT EXISTS( SELECT authorID FROM authors WHERE firstname = authorFirstName AND lastname = authorLastName)
 //            THEN
@@ -384,8 +396,8 @@ public class JDBConnection {
 //            INSERT INTO authorISB(isbn, authorID) VALUE(new_isbn, @someVaribale);
 //
 
-              // we have a existing author in out author table
-              // connect the author to the new title through authorISBN
+            // we have a existing author in out author table
+            // connect the author to the new title through authorISBN
 //            ELSE
 //            SET @someVaribale = (SELECT authorID FROM authors WHERE firstname = authorFirstName AND lastname = authorLastName);
 //            INSERT INTO authorISBN(isbn, authorID) VALUE(new_isbn, @someVaribale);
@@ -401,7 +413,7 @@ public class JDBConnection {
 //            INSERT INTO titles (isbn, title, editionNumber, year, publisherID, price) VALUE(new_isbn, new_title, new_editionNumber, new_year,  @localPublisheID,  new_price);
 //            ELSE
 
-              //3) insert
+            //3) insert
 //            SET @localPublisheID = (SELECT publisherID FROM publishers WHERE publisherName = new_publisherName);
 //            INSERT INTO titles (isbn, title, editionNumber, year, publisherID, price) VALUE(new_isbn, new_title, new_editionNumber, new_year,  @localPublisheID,  new_price);
 //            END IF;
@@ -416,5 +428,38 @@ public class JDBConnection {
         }
     }
 
+     //-------------------------------------------------------------------------------------------------------------------------
+     // 9) add a new title for an author
+     //   works perfect, bug free
+
+    public static void selectAllTitles(Statement stmt){
+        try {
+
+            String sql = "SELECT * FROM titles";
+            ResultSet rs = stmt.executeQuery(sql);
+            // if book exits then print them all
+            while (rs.next()) {
+                int publisherID = rs.getInt("publisherID");
+                int editionNum = rs.getInt("editionNumber");
+                String year = rs.getString("year");
+                String isbn = rs.getString("isbn");
+                String title = rs.getString("title");
+                long price = rs.getLong("price");
+
+
+                System.out.print("ISBN: " + isbn);
+                System.out.print(", Title: " + title);
+                System.out.print(", Edition Number: " + editionNum);
+                System.out.print(", Year: " + year);
+                System.out.print(", PublisherID: " + publisherID);
+                System.out.print(", Price: " + price);
+                System.out.println();
+            }
+            rs.close();
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
 }
 
