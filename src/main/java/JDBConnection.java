@@ -8,10 +8,13 @@ public class JDBConnection {
 
     //JDBC driver name and database URL
     static final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
-    static final String DB_URL = "jdbc:mysql://koko.c8cejdutv9zr.us-east-2.rds.amazonaws.com/Books";
+    static final String DB_URL = "jdbc:mysql://koko.c8cejdutv9zr.us-east-2.rds.amazonaws.com/codeman";
 
-    static final String USER = "team";
-    static final String PASS = "cs157a";
+    static final String USER = "ruiyang00";
+    static final String PASS = "yyx71618";
+
+
+    
 
 
     public static void main(String[] args) throws SQLException {
@@ -27,15 +30,16 @@ public class JDBConnection {
             BooksTables books = new BooksTables(stmt, con);
             books.populateTables(stmt, con);
             //  autoFill(stmt);
-            //    selectQueryOnAuthor(stmt);
+
+
+
+
+               // selectQueryOnAuthor(stmt);
             // selectQueryOnPublihers(stmt);
-
             // selectBooksFromSpecificPublisher(stmt);
-
             // addNewAuthorQuery(stmt);
             //   addNewPublisherQuery(stmt);
            // addNewTitleForAuthor(stmt, con);
-
             // updatePublisherInfo(stmt);
             //  updateAuthorInfo(stmt);
 
@@ -110,6 +114,9 @@ public class JDBConnection {
         }
     }
 
+
+
+
     //1) Select all authors from the authors table. Order the information alphabetically by the author’s last name and first name.
     //   works perfect, bug free
     public static void selectQueryOnAuthor(Statement stmt) {
@@ -117,6 +124,8 @@ public class JDBConnection {
         try {
             String sql = "SELECT * FROM authors ORDER BY lastname ASC, firstname ASC";
             ResultSet rs = stmt.executeQuery(sql);
+
+            // this means that we find all the authors rs.next()
             while (rs.next()) {
                 int authorID = rs.getInt("authorID");
                 String firstname = rs.getString("firstname");
@@ -167,9 +176,14 @@ public class JDBConnection {
     //   works perfect, bug free
     public static void selectBooksFromSpecificPublisher(Statement stmt) {
 
+
+
         try {
+
+            //select all the books that matches the publisherID = 4
             String sql = "SELECT * FROM titles WHERE publisherID = 4 ";
             ResultSet rs = stmt.executeQuery(sql);
+            // if book exits then print them all
             while (rs.next()) {
                 int publisherID = rs.getInt("publisherID");
                 int editionNum = rs.getInt("editionNumber");
@@ -261,7 +275,7 @@ public class JDBConnection {
                 sql = " UPDATE publishers " + " SET publisherName = '" + newPBname + "'" + " WHERE publisherName = '" + pbname + "'";
                 stmt.executeUpdate(sql);
             } else {
-                System.out.println("Failure! publisher already existed");
+                System.out.println("Failure! publisher '"+ pbname  +"' does not existed");
             }
 
         } catch (SQLException e) {
@@ -314,24 +328,29 @@ public class JDBConnection {
             String sql = "set foreign_key_checks = 0";
             stmt.execute(sql);
 
-            // String sql = "CALL `codeman`.`add_new_title_to_author`('ISBN000113', 'Hello World', 1, '1990', 'HouseTagerreal', 99.99, 'Roy', 'Oh');";
+            // below is the SQL code for calling  add_new_title_to_ahtuor() procedure
+            //"CALL `codeman`.`add_new_title_to_author`('ISBN000113', 'Hello World', 1, '1990', 'HouseTagerreal', 99.99, 'Roy', 'Oh');";
+            // CallableStatement is only used for store procedure call.
             CallableStatement cStmt = con.prepareCall("{call add_new_title_to_author(?, ?, ?, ?, ?, ?, ? ,?)}");
+
+
 
             //author info
             cStmt.setString(7, "Roy");
             cStmt.setString(8, "Oh");
 
             //authorISBN info
-            cStmt.setString(1, "ISBN000143");
+            cStmt.setString(1, "ISBN000443");
 
             //publisher info
-            cStmt.setString(5, "House Hmong");
+            cStmt.setString(5, "House TYK");
 
             //title info
-            cStmt.setString(2, "Hello New World");
+            cStmt.setString(2, "POL");
             cStmt.setInt(3, 1);
             cStmt.setString(4, "1991");
-            cStmt.setDouble(6, 100.99);
+            cStmt.setDouble(6, 110.22);
+
 
             cStmt.execute();
             cStmt.close();
@@ -353,35 +372,43 @@ public class JDBConnection {
 //            in authorFirstName varchar(20),
 //                    in authorLastName varchar(20))
 //            BEGIN
-//
-//
+
+
+
+              //1) check if author is in our author tabl
+
 //            IF NOT EXISTS( SELECT authorID FROM authors WHERE firstname = authorFirstName AND lastname = authorLastName)
 //            THEN
 //            INSERT INTO authors(firstname , lastname) VALUE(authorFirstName, authorLastName);
 //            SET @someVaribale = (SELECT authorID FROM authors WHERE firstname = authorFirstName AND lastname = authorLastName);
 //            INSERT INTO authorISB(isbn, authorID) VALUE(new_isbn, @someVaribale);
 //
+
+              // we have a existing author in out author table
+              // connect the author to the new title through authorISBN
 //            ELSE
 //            SET @someVaribale = (SELECT authorID FROM authors WHERE firstname = authorFirstName AND lastname = authorLastName);
 //            INSERT INTO authorISBN(isbn, authorID) VALUE(new_isbn, @someVaribale);
 //            END IF;
 //
 //
-//
+//             2). check publishers table
+
 //            IF NOT EXISTS( SELECT publisherID FROM publishers WHERE publisherName = new_publisherName)
 //            THEN
 //            INSERT INTO publishers(publisherName) VALUE(new_publisherName);
 //            SET @localPublisheID = (SELECT publisherID FROM publishers WHERE publisherName = new_publisherName);
 //            INSERT INTO titles (isbn, title, editionNumber, year, publisherID, price) VALUE(new_isbn, new_title, new_editionNumber, new_year,  @localPublisheID,  new_price);
 //            ELSE
+
+              //3) insert
 //            SET @localPublisheID = (SELECT publisherID FROM publishers WHERE publisherName = new_publisherName);
 //            INSERT INTO titles (isbn, title, editionNumber, year, publisherID, price) VALUE(new_isbn, new_title, new_editionNumber, new_year,  @localPublisheID,  new_price);
 //            END IF;
 //            END$$
 //                    DELIMITER ;
 //          -----------------------------------------------------------------
-
-
+            // stored procedure  
         } catch (SQLException e) {
 
             // TODO Auto-generated catch block
