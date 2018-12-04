@@ -95,7 +95,7 @@ public class MySQLConnection {
 		 * Add a new title for an author 
 		 */
 		String trigger = " DELIMITER $$ "
-						 + " CREATE TRIGGER trigger_helper "
+						 + " CREATE TRIGGER trigger_helpers "
 						 + " AFTER INSERT ON titles "
 						 + " FOR EACH ROW BEGIN "
 						 + " INSERT INTO authors (authorID, firstname, lastname) "
