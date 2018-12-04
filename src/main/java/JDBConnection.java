@@ -337,6 +337,50 @@ public class JDBConnection {
             cStmt.close();
             stmt.close();
             System.out.println("Stored procedure called successfully!");
+//          -----------------------------------------------------------------
+
+
+            // below are the sql codes that I write for Stored Procedure
+//          -----------------------------------------------------------------
+
+//            DELIMITER $$
+//            CREATE DEFINER=`ruiyang00`@`%` PROCEDURE `add_new_title_to_author`(in new_isbn char(10),
+//                    in new_title varchar(500),
+//                    in new_editionNumber int,
+//            in new_year  char(4),
+//                    in new_publisherName char(100),
+//                    in new_price decimal(8,2),
+//            in authorFirstName varchar(20),
+//                    in authorLastName varchar(20))
+//            BEGIN
+//
+//
+//            IF NOT EXISTS( SELECT authorID FROM authors WHERE firstname = authorFirstName AND lastname = authorLastName)
+//            THEN
+//            INSERT INTO authors(firstname , lastname) VALUE(authorFirstName, authorLastName);
+//            SET @someVaribale = (SELECT authorID FROM authors WHERE firstname = authorFirstName AND lastname = authorLastName);
+//            INSERT INTO authorISB(isbn, authorID) VALUE(new_isbn, @someVaribale);
+//
+//            ELSE
+//            SET @someVaribale = (SELECT authorID FROM authors WHERE firstname = authorFirstName AND lastname = authorLastName);
+//            INSERT INTO authorISBN(isbn, authorID) VALUE(new_isbn, @someVaribale);
+//            END IF;
+//
+//
+//
+//            IF NOT EXISTS( SELECT publisherID FROM publishers WHERE publisherName = new_publisherName)
+//            THEN
+//            INSERT INTO publishers(publisherName) VALUE(new_publisherName);
+//            SET @localPublisheID = (SELECT publisherID FROM publishers WHERE publisherName = new_publisherName);
+//            INSERT INTO titles (isbn, title, editionNumber, year, publisherID, price) VALUE(new_isbn, new_title, new_editionNumber, new_year,  @localPublisheID,  new_price);
+//            ELSE
+//            SET @localPublisheID = (SELECT publisherID FROM publishers WHERE publisherName = new_publisherName);
+//            INSERT INTO titles (isbn, title, editionNumber, year, publisherID, price) VALUE(new_isbn, new_title, new_editionNumber, new_year,  @localPublisheID,  new_price);
+//            END IF;
+//            END$$
+//                    DELIMITER ;
+//          -----------------------------------------------------------------
+
 
         } catch (SQLException e) {
 
