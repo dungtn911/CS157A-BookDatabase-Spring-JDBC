@@ -8,10 +8,10 @@ public class JDBConnection {
 
     //JDBC driver name and database URL
     static final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
-    static final String DB_URL = "jdbc:mysql://koko.c8cejdutv9zr.us-east-2.rds.amazonaws.com/codeman";
+    static final String DB_URL = "jdbc:mysql://koko.c8cejdutv9zr.us-east-2.rds.amazonaws.com/Books";
 
-    static final String USER = "ruiyang00";
-    static final String PASS = "yyx71618";
+    static final String USER = "team";
+    static final String PASS = "cs157a";
 
 
     public static void main(String[] args) throws SQLException {
@@ -111,7 +111,7 @@ public class JDBConnection {
     }
 
     //1) Select all authors from the authors table. Order the information alphabetically by the author’s last name and first name.
-    //   work perfect, bug free
+    //   works perfect, bug free
     public static void selectQueryOnAuthor(Statement stmt) {
 
         try {
@@ -138,7 +138,7 @@ public class JDBConnection {
 
     //-------------------------------------------------------------------------------------------------------------------------
     //2) Select all publishers from the publishers table.
-    //   work perfect, bug free
+    //   works perfect, bug free
     public static void selectQueryOnPublihers(Statement stmt) {
 
         try {
@@ -164,7 +164,7 @@ public class JDBConnection {
     //-------------------------------------------------------------------------------------------------------------------------
     //3) Select a specific publisher and list all books published by that publisher.
     //   Include the title, year and ISBN number. Order the information alphabetically by title.
-    //   work perfect, bug free
+    //   works perfect, bug free
     public static void selectBooksFromSpecificPublisher(Statement stmt) {
 
         try {
@@ -196,7 +196,7 @@ public class JDBConnection {
 
     //-------------------------------------------------------------------------------------------------------------------------
     //4) Add new author
-    //   work perfect, bug free
+    //   works perfect, bug free
     public static void addNewAuthorQuery(Statement stmt) {
         Scanner sc = new Scanner(System.in);
         System.out.println("Enter First Name: ");
@@ -221,7 +221,7 @@ public class JDBConnection {
 
     //-------------------------------------------------------------------------------------------------------------------------
     //5) Add new publisher
-    //   work perfect, bug free
+    //   works perfect, bug free
     public static void addNewPublisherQuery(Statement stmt) {
         Scanner sc = new Scanner(System.in);
         System.out.println("Enter Publisher's  Name: ");
@@ -246,7 +246,7 @@ public class JDBConnection {
 
     //-------------------------------------------------------------------------------------------------------------------------
     // 6)Edit/Update the existing information about a publisher
-    //   work perfect, bug free
+    //   works perfect, bug free
     public static void updatePublisherInfo(Statement stmt) {
         Scanner sc = new Scanner(System.in);
         System.out.println("Enter Publisher's  Name You want to update: ");
@@ -306,7 +306,7 @@ public class JDBConnection {
 
     //-------------------------------------------------------------------------------------------------------------------------
     // 8) add a new title for an author
-    //   work perfect, bug free
+    //   works perfect, bug free
     public static void addNewTitleForAuthor(Statement stmt, Connection con) {
 
         try {
